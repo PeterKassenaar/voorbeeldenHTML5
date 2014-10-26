@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+	text-align:center;
+}
+
+#canvas1{
+	border: 2px solid #333;	
+}
+</style>
+<title>Canvas 04 Lijnbreedte en -stijl</title>
+</head>
+<body>
+<div id="container">
+<div id="status">Status informatie</div>
+</div>
+
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	if(!Modernizr.canvas){
+		setStatus('Uw browser ondersteunt geen Canvas');
+		// toon fallback-content of laadt plug-in
+	}
+	else{
+		// 0. initialisaties
+		setStatus('Geschikt voor Canvas');
+		var width = 500;
+		var height = 500;
+		
+		// 1. Canvas maken
+		var canvas= document.createElement('canvas');
+		canvas.width=width;
+		canvas.height=height;
+		canvas.id= 'canvas1';
+		
+		// 2. Canvas toevoegen aan DOM.
+		$(canvas).appendTo('#container'); // OF: $('#container').append(canvas);
+		
+		// 3. Context ophalen en testen of getekend kan worden
+		var ctx = canvas.getContext('2d');
+		if (ctx){
+			// 3a. lichtblauwe achtergrond
+			ctx.fillStyle = 'lightBlue';
+			ctx.fillRect(0, 0, width, height);
+			
+			// 4. Vulkleur instellen
+			ctx.fillStyle= 'darkBlue';
+			// teken rechthoek van 50px hoog over volle breedte aan boven- en onderrand
+			ctx.fillRect(0,0, width, 50); 
+			ctx.fillRect(0, height-50, width, 50)
+			
+			// 4a. Lijnstijl instellen			
+			ctx.lineWidth = 15;
+			ctx.strokeStyle = 'rgba(0,0,255,0.5)';	// gebruik rgba() voor transparante lijnstijl
+			ctx.strokeRect((width/2)-37.5, (height/2)-37.5, 75, 75); // teken vierkant gecentreerd op scherm
+			// 3a. lichtblauwe achtergrond
+			ctx.fillStyle = 'rgba(255,0,0, 0.3)' ;
+			ctx.fillRect(0, 0, width, height);
+			
+			ctx.fillStyle= '#000';
+			ctx.fillRect((width/2), (height/2), 4, 4);
+			
+
+		}
+	}
+	
+	
+});
+
+
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

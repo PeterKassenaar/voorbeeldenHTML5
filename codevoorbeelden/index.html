@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!--<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-1.7-development-only.js"></script>-->
+<script src="scripts/modernizr-latest.js"></script>
+<title>Cursus HTML5 Development</title>
+
+
+<style>
+#status {
+	display:none;
+	margin-bottom:15px;
+	padding:5px 10px;
+	border-radius:5px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#save {
+	display: none;
+	margin: 5px 10px 10px;
+	width:100px;
+	height:40px;
+	font-size:24px;
+}
+#editable{
+	border:2px solid #888;
+	width:400px;
+	background-color:#eee;
+}
+</style>
+</head>
+
+<body>
+<div id="status"></div>
+<div id="content">
+  <div id="editable" contentEditable="true"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </div>
+  <button id="save">Save</button>
+</div>
+<script>
+$(document).ready(function() {
+	// klikken in bewerkbare tekst afvangen
+    $('#editable').on('click', function(evt){
+		$('#save').show();
+		evt.stopPropagation();
+	});
+	
+	$(document).on('click', function(){
+		$('#save').hide();
+	});
+	
+	
+	
+	// Reeds eerder gewijzigde content aanwezig? Ophalen en tonen
+	if(Modernizr.localstorage){
+		var storedContent = localStorage.getItem('content');
+		if(storedContent){
+		$('#editable').html(storedContent);
+		}
+	}
+
+
+	
+	// Gewijzigde content lokaal opslaan
+	$('#save').on('click', function(e){
+		var newContent = $('#editable').html();		
+		if(Modernizr.localstorage){
+			var storedContent = localStorage.setItem('content', newContent);
+			var message = 'Nieuwe inhoud opgeslagen';
+			$('#status').html(message).fadeIn('slow')
+			setTimeout("$('#status').fadeOut('slow', function(){$(this).html();});", 2500);
+			$('#save').hide();
+		}
+	});
+	
+});
+</script>
+</body>
+</html>

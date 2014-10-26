@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#dropzone{
+	width:400px;
+	height:300px;
+	background-color:#eee;
+	border: 2px dashed #888;
+	font-size:24px;
+	text-align:center;
+	margin:10px;
+}
+</style>
+<title>File API - Drag & Drop</title>
+</head>
+<body>
+<div id="status">Status informatie</div>
+<div id="dropzone">
+<p>Drop files here, please</p>
+</div>
+  <div id="fileProperties">
+  </div>
+
+<script>
+// global var
+var hasFileApi = false;
+
+$(document).ready(function(e) {
+	// 1. Is de File API beschikbaar?
+	hasFileApi = (window.File && window.FileReader);
+	if(!hasFileApi){
+		// 1a. File API niet beschikbaar
+		setStatus('Uw browser ondersteunt geen file API');
+		$('#inputFile').hide();		
+	}else{		
+		// 2. File API is beschikbaar. 
+		setStatus('De File API is beschikbaar');		
+		
+		// 3. dropped files detecteren via EventListeners. 
+		// LET OP: de jQuery-notatie werkt niet, deze geeft een ander type event door (zonder dataTransfer-object).
+		//$('#dropzone').on('drop', onFileDropped);
+		//$('#dropzone').on('dragover', onDragOver);
+		document.getElementById('dropzone').addEventListener('drop', onFileDropped);
+		document.getElementById('dropzone').addEventListener('dragover', onDragOver);
+	}
+});
+
+function onFileDropped(event){
+	// 0. cancel propagation
+	event.stopPropagation();
+	event.preventDefault();	
+	// 1. Bestandsnaam of -namen achterhalen
+	var files = event.dataTransfer.files; // het dataTransfer-object van HTML drag/drop
+	var totalBytes = 0;
+	var numFiles = files.length 
+	setStatus( numFiles + ' Bestand(en) gekozen');
+	
+	// 2. Overige bestandsgegevens berekenen
+	for (var i=0; i< files.length; i++){
+		var fileInfo= '<p>Name: ' + files[i].name + ', size: '+ files[i].size + '</p>';
+		$('#fileProperties').append(fileInfo);
+		totalBytes += files[i].size;		
+	}
+	$('#fileProperties').append('<p><strong>Totaal  bytes: '+ totalBytes+ '</strong></p>');
+}
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+
+function onDragOver(event){
+	event.stopPropagation();
+	event.preventDefault();	
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+/* [styles here] */
+
+#canvas1{
+	border: 1px dotted #333;	
+}
+
+
+</style>
+<title>[title here]</title>
+</head>
+<body>
+<div id="container"></div>
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	
+		var width = 700;
+		var height = 500;
+		
+		// 1. Canvas maken
+		var canvas= document.createElement('canvas');
+		canvas.width=width;
+		canvas.height=height;
+		canvas.id= 'canvas1';
+		
+		// 2. Canvas toevoegen aan DOM.
+		$(canvas).appendTo('#container'); // OF: $('#container').append(canvas);
+		
+		// 3. Context ophalen en testen of getekend kan worden
+		var ctx = canvas.getContext('2d');
+		if (ctx){			
+			var img = new Image();
+			img.src='img/textuur.png';
+			img.onload= function(){
+				ctx.drawImage(img, 0, 0);
+			}			
+		}
+		
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/jquery-ui-1.8.17.custom.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	min-height:400px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+}
+.card{
+	width:70px;	
+	margin: 0 6px;
+	border:1px solid #333;
+	box-shadow:3px 3px 5px #999;
+}
+
+</style>
+<title>Drag and Drop via jQuery - 3</title>
+</head>
+<body>
+<div id="container">
+    <div id="status">Status informatie</div>
+    <div id="cards">
+        <img src="img/ace_hearts.jpg" id="aceHearts" alt="Ace of clubs" class="card">
+        <img src="img/cards/2_hearts.jpg" id="2hearts" alt="Hartentwee" class="card" >
+        <img src="img/cards/3_hearts.jpg" id="3hearts" alt="Hartendrie" class="card" >
+		<img src="img/cards/4_hearts.jpg" id="4hearts" alt="Hartenvier" class="card" >
+		<img src="img/cards/5_hearts.jpg" id="5Hearts" alt="Hartenvijf" class="card" >        
+
+    </div>
+    <div id="dropzone">
+    </div>
+</div>
+
+<script>
+// parameters voor slepen in global variable
+var dragParameters={
+	containment: '#container',
+	cursor: 'move',
+	snap: '#container',
+	stack: '.card',
+	start: onDragStart,
+	stop: onDragStop
+}
+
+$(document).ready(function(e) {
+	// 1. Wordt Drag and Drop ondersteund?
+    if(Modernizr.draganddrop){
+		
+		// 2. Ja. Tonen in UI
+		setStatus('Drag and Drop wordt ondersteund');
+		
+		// 3. elementen draggable maken
+		$('.card').draggable(dragParameters);
+	}
+});
+
+function onDragStart(event, ui){
+	setStatus('Drag started');
+	$('#status'	).css('background-color', '#333');	
+}
+
+function onDragStop(event, ui){
+	var xPos = parseInt(ui.offset.left);
+	var yPos = parseInt(ui.offset.top);
+	setStatus('Drag gestopt op positie ('+ xPos + ', ' + yPos + ')');
+	$('#status'	).css('background-color', '#699');
+}
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+
+</script>
+</body>
+</html>

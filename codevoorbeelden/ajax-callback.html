@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8"><script src="myscript.js"></script>
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+/* [styles here] */
+
+</style>
+<title>Pass multiple data in jQuery ajax call</title>
+</head>
+<body>
+<button id="btnAjax">Get AJAX-data</button>
+<div id="divResult"></div>
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here   
+	var serviceUrl = '/webservices/YindoBookService.asmx/getNewBooks';
+	var myContentType = 'application/json; charset=utf-8';
+	var otherData = { naam: 'Peter', leeftijd : '43', woonplaats: 'Dieren'};
+	$('#btnAjax').on('click', function(){
+		$.ajax({
+			method: "POST",
+			url : serviceUrl,
+			dataType: 'json',
+			contentType : myContentType,
+			success : function(data){
+					processResult(data, otherData);
+			}
+		});
+	});
+	// Verwerk de data
+	function processResult(ajaxData, dataTransfer){
+		var divResult = $('#divResult');
+		divResult.append('<h2>' + dataTransfer.naam + '</h2>');
+		for (var i in ajaxData){
+			divResult.append('ISBN: ' + ajaxData[i].ean + '<br />');
+		}
+	}
+});
+</script>
+</body>
+</html>

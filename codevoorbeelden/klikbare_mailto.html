@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+/* [styles here] */
+.mailLink{
+	text-decoration: underline;
+	cursor:pointer;	
+}
+</style>
+<title>[title here]</title>
+</head>
+<body>
+<h2>Een klikbare mailto:</h2>
+<p>Een klikbare mailto: in het document, terwijl in de broncode dit niet wordt getoond.</p>
+<p>Mail naar <a class="mailLink" data-mailid="1">peter -at- kassenaar.nl</a></p>
+<p>Of mail naar <a class="mailLink" data-mailid="2">henk -at-  vandekamer.com</a></p>
+<script>
+$(document).ready(function(e) {
+	var mailIds = {
+		1: 'peter@kassenaar.nl',
+		2: 'henk@vandekamer.com'	
+	}
+	// JavaScript/jQuery here   
+	$('.mailLink').each(function(index, element) {
+		var ID = $(this).data('mailid')
+//		$(this).html(mailIds[ID]);
+		$(this).on('click', function() {
+			$(this).attr('href', 'mailto:' + mailIds[ID]);
+		});
+	});
+	
+		
+});
+</script>
+</body>
+</html>

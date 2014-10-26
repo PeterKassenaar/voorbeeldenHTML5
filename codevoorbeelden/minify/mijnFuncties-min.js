@@ -1,0 +1,1 @@
+function optellen(b,c){var a=0;a=parseInt(b)+parseInt(c);return a}function aftrekken(b,c){var a=0;a=parseInt(b)-parseInt(c);return a};

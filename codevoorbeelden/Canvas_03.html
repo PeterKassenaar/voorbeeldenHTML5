@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+	text-align:center;
+}
+
+#canvas1{
+	border: 2px solid #333;	
+}
+</style>
+<title>Canvas 02 - Programmatisch toevoegen</title>
+</head>
+<body>
+<div id="container">
+<div id="status">Status informatie</div>
+</div>
+
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	if(!Modernizr.canvas){
+		setStatus('Uw browser ondersteunt geen Canvas');
+		// toon fallback-content of laadt plug-in
+	}
+	else{
+		setStatus('Geschikt voor Canvas');
+		// 1. Canvas maken
+		var canvas= document.createElement('canvas');
+		canvas.width=500;
+		canvas.height=500;
+		canvas.id= 'canvas1';
+		
+		// 2. Canvas toevoegen aan DOM.
+		$(canvas).appendTo('#container'); // OF: $('#container').append(canvas);
+		
+		// 3. Context ophalen en testen of getekend kan worden
+		var ctx = canvas.getContext('2d');
+		if (ctx){
+			// 3a. Er kan getekend worden....
+			ctx.fillStyle = 'lightBlue';
+			ctx.fillRect(100, 100, ctx.canvas.width, ctx.canvas.height);
+
+		}
+	}
+	
+	
+});
+
+
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

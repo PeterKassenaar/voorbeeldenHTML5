@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+/* [styles here] */
+h1{
+	color: red;	
+}
+span{
+	font-weight: bold;	
+}
+</style>
+<title>[title here]</title>
+</head>
+<body>
+[content here]
+
+<script>
+// JSON - notatie
+// Javascript Object Notation
+var mijnVar = {
+	naam : 'peter',
+	woonplaats : 'Dieren',
+	leeftijd: 43,
+	kinderen : [
+		"zoon", 
+		"dochter"
+		],
+	kinderenAlternatief: [
+		{
+			zoon: 'Javan',
+			dochter: 'Feline'
+		},
+		{
+			kleinkind1: 'jan',
+			kleinkind2:' piet'
+		}
+	]
+	
+	}
+
+
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	console.log(mijnVar);
+	
+	$('#naam').html(mijnVar.naam);
+	$('#kind1').html(mijnVar.kinderenAlternatief[0].zoon);
+	$('#kind2').html(mijnVar.kinderenAlternatief[0]['dochter']);
+	$('#aantalKinderen').html(mijnVar.kinderen.length);
+	var msg=" je hebt een " ;
+	for (var i in mijnVar.kinderen){
+		msg +=  mijnVar.kinderen[i] + " en een " ;
+	}
+	$('#lusKids').html(msg);
+});
+</script>
+<h1>hallo  <span id="naam"></span></h1>
+
+<ul>
+
+<li>Aantal kinderen: <span id="aantalKinderen"></span><br><br>
+</li><li>Je hebt een  :  <span id="lusKids"></span>
+</li><li>Kind1 : <span id="kind1"></span></li><li>Kind2 :  <span id="kind2"></span></li></ul>
+
+</body>
+</html>

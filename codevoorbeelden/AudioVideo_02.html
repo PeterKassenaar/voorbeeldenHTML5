@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+/* [styles here] */
+
+</style>
+<title>Video 02</title>
+</head>
+<body>
+
+<video controls autostart> 
+
+	<!-- als eerste de mp4-verwijzing voor iPhone en iPad (iOS 3.x) -->
+	<source src="video/kruiwagen.mp4" type="video/mp4" />
+
+	<!-- overige browsers -->
+	<source src="video/kruiwagen.webm" type="video/webm" />
+	<source src="video/kruiwagen.ogv" type="video/ogg" />
+    
+</video>
+
+
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+/* [styles here] */
+
+</style>
+<title>[title here]</title>
+</head>
+<body>
+<div id="myDiv"></div>
+
+<script>
+var schrijvers = {
+	naam: ['vestdijk', 'mulisch', 'van het reve'],
+	titel : ['titel1', 'titel2', 'titel3']
+};
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	$('#myDiv').html(schrijvers.naam[0]);
+});
+</script>
+</body>
+</html>

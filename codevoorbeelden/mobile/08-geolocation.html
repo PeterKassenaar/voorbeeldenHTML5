@@ -1,0 +1,128 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<meta charset="utf-8">
+	<title>Geolocation in jQuery Mobile</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script>
+		$(document).on('mobileinit', function(){
+			$.mobile.page.prototype.options.addBackBtn = true;
+		});
+	</script>
+	<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+    <!-- Include Google Maps API-->
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script>	
+	$(document).ready(function(e) {
+        // eigen scripts
+    });
+		
+	</script>
+    <style>
+	#map-page, #map-canvas{
+		width:100%;
+		height:100%;
+		margin: 0;
+		padding: 0;	
+	}
+	</style>
+</head> 
+<body> 
+
+<!-- Homepage -->
+<div data-role="page">
+	<div data-role="header">
+		<h1>Geolocation Demo</h1>
+	</div>
+
+	<div data-role="content">	
+    <p> jQuery Mobile in combinatie met Google Maps</p>
+<a href="#map-page" data-role="button" data-theme="b" >Launch Google Maps</a>
+	</div>
+
+	<div data-role="footer" data-position="fixed">
+		<h4>Voettekst</h4>
+	</div>
+    <!-- Script for Google Maps on this page-->
+    
+</div>
+
+
+<div data-role="page" id="map-page">
+	<div data-role="header">
+		<h1>Geolocation Demo</h1>
+	</div>
+
+	<div data-role="content" id="map-canvas">	
+    <!-- Hier komt de Google Map -->
+	</div>
+    <script>
+	$('#map-page').on('pageinit', function(){
+		geo = navigator.geolocation;
+		geo.getCurrentPosition(showMap, handleGeoError); 
+		
+		// Callback: success
+		function showMap(position){
+			// 1. standaard coordinaten ophalen
+			var lat = position.coords.latitude;
+			var long = position.coords.longitude;
+			
+			// 2. Omzetten naar Google coordinaten-object.	
+			var gCoords = new google.maps.LatLng(lat, long); 
+					
+			var mapOptions = {
+				zoom: 13, 
+				center: gCoords,				
+				mapTypeControl: false,			
+				mapTypeId: google.maps.MapTypeId.ROADMAP	
+			};
+			
+			// 5. Maak de map en plaats in de <div id="map_canvas">
+			var map = new google.maps.Map(
+				document.getElementById('map-canvas'),
+				mapOptions);
+				
+			// 6. Plaats een speld/markering
+			var markerOptions ={
+				position: gCoords,
+				map: map,
+				title: 'U bevindt zich hier. Ongeveer'
+			};
+			var marker = new google.maps.Marker(markerOptions);
+			
+		};
+		
+		
+		
+		// Callback: failure
+		function handleGeoError(errorCode){
+				switch(errorCode.code){
+			case errorCode.TIMEOUT:
+				setStatus('FOUT: Positie niet beschikbaar - er is een timeout opgetreden');
+				break;
+			case errorCode.POSITION_UNAVAILABLE:
+				setStatus('FOUT: Positie werd niet gevonden');
+				break;
+			case errorCode.PERMISSION_DENIED:
+				setStatus('FOUT: Geen toestemming locatie te gebruiken');
+				break;	
+			default:
+				setStatus('FOUT: Onbekende fout opgetreden, met foutcode: ' + errorCode.code);
+			}
+	
+		};
+		
+		// Algemene functie om bericht in statusbalk te tonen
+		function setStatus(message){
+			$('#map-canvas').html(message);
+		}
+
+	});
+	
+	</script>
+</div>
+</body>
+</html>
+

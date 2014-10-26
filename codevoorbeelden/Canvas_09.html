@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+	text-align:center;
+}
+
+#canvas1{
+	border: 1px dotted #333;	
+}
+
+</style>
+<title>Canvas grafieken</title>
+</head>
+<body>
+<div id="container">
+<div id="status">Status informatie</div>
+</div>
+
+<script>
+// globale variabele met data - deze kan in werkelijkheid bv uit database komen
+var data = [
+	{category: 'Appeltaart', sales: 150},
+	{category: 'Kwarktaart', sales: 420},
+	{category: 'Kruimelvlaai', sales: 138},
+	{category: 'Banketstaaf', sales: 20}
+];
+
+$(document).ready(function(e) {
+
+	// JavaScript/jQuery here    
+	if(!Modernizr.canvas){
+		setStatus('Uw browser ondersteunt geen Canvas');
+		// toon fallback-content of laadt plug-in
+	}
+	else{
+		// 0. initialisaties
+		setStatus('Geschikt voor Canvas');
+		var width = 700;
+		var height = 500;
+		
+		// 1. Canvas maken
+		var canvas= document.createElement('canvas');
+		canvas.width=width;
+		canvas.height=height;
+		canvas.id= 'canvas1';
+		
+		// 2. Canvas toevoegen aan DOM.
+		$(canvas).appendTo('#container'); // OF: $('#container').append(canvas);
+		
+		// 3. Context ophalen en testen of getekend kan worden
+		var ctx = canvas.getContext('2d');
+		if (ctx){			
+			// 4. de Y-as maken
+			ctx.moveTo(110,5);
+			ctx.lineTo(110,425);
+			ctx.strokeStyle='blue';
+			ctx.lineWidth=3;
+			ctx.stroke();
+			
+			// 5. de X-as maken (gaat verder op (x,y) waar je gebleven bent)
+			ctx.lineTo(695,425);
+			ctx.stroke();
+			
+			// 6. de labels plaatsen. Eerst X-as
+			var height = ctx.canvas.height;
+			var widthOffset = (ctx.canvas.width / 2);
+			ctx.font= '24px Verdana';
+			ctx.fillText('Product', widthOffset, height-20);
+			
+			// 7. Y-as label
+			var heightOffset = height/2;
+			ctx.fillText('Aantal', 10, heightOffset);
+			
+			// 8. Rechthoeken tekenen voor producten
+			var barWidth=100;
+			var xPos = 125;
+			var yPos = 425;
+			ctx.font= '16px Verdana';
+			for (var i = 0; i < data.length; i++){
+				var category = data[i].category;
+				var aantal = data[i].sales;
+				ctx.fillRect(xPos, yPos-aantal, barWidth, aantal); // Balk tekenen. Y-positie berekenen door (yPos-aantal) te berekenen
+				ctx.fillText(category, xPos, yPos + 20); // Label plaatsen.
+				xPos += 125;
+			}
+			
+		}
+	}
+	
+	
+});
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

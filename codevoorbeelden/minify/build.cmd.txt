@@ -1,0 +1,19 @@
+echo  * Dit bestand voegt de aanwezige javascript-bestanden samen 
+echo  * in een nieuw bestand en minimaliseert daarna de code naar
+echo  *	mijnFuncties-min.js
+
+type copyright_intro.txt > mijnFuncties.js
+
+for %%f in (
+  mijnPlugin01.js
+  mijnPlugin02.js
+) do (
+  echo.
+  echo // %%f:
+  echo.
+  type %%f
+) >> mijnFuncties.js
+
+ajaxmin.exe /Z /HC mijnFuncties.js >> mijnFuncties-min.js
+
+del mijnFuncties.js

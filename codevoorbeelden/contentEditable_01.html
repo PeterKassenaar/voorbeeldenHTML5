@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<title>Test Content Editable</title>
+
+
+<style>
+body{
+	padding:10px; /* overrule normalize.css */
+}
+#status {
+	display:none;
+	width:400px;
+	margin-bottom:15px;
+	padding:5px 10px;
+	border-radius:5px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#save {
+	display: none;
+	margin: 5px 10px 10px;
+	width:100px;
+	height:40px;
+	font-size:24px;
+}
+#editable{
+	font-family:Tahoma, Geneva, sans-serif;
+	border:4px solid #888;
+	width:400px;
+	background-color:#eee;
+	padding: 10px;
+}
+</style>
+</head>
+
+<body>
+<div id="status"></div>
+<div id="content">
+  <div id="editable" contentEditable="true"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </div>
+  <button id="save">Save</button>
+</div>
+<script>
+$(document).ready(function() {
+	// 1. klikken in bewerkbare tekst afvangen
+/**********
+   $('#editable').on('click', function(evt){
+		// 1a. Knop Save tonen
+		$('#save').show();
+		evt.stopPropagation();
+	});
+	
+	// 2. Bij klikken buiten div de knop Save weer verbergen
+	$(document).on('click', function(){
+		$('#save').hide();
+	});	
+	
+	
+	// 3. Gewijzigde content lokaal opslaan
+	$('#save').on('click', function(e){
+		var newContent = $('#editable').html();		
+		// HIER: aanroep naar PHP of ASP.NET of webservice
+		// voor opslag van wijzigingen in database.
+		
+		// NU: opslag in localStorage
+		if(Modernizr.localstorage){
+			var storedContent = localStorage.setItem('content', newContent);
+			// Bericht tonen in UI.
+			var message = 'Nieuwe inhoud opgeslagen';
+			$('#status').html(message).fadeIn('slow')
+			setTimeout("$('#status').fadeOut('slow', function(){$(this).html();});", 2500);
+			$('#save').hide();
+		}
+	});
+	
+	// 4. Reeds eerder gewijzigde content aanwezig? Ophalen en tonen
+	if(Modernizr.localstorage){
+		var storedContent = localStorage.getItem('content');
+		if(storedContent){
+		$('#editable').html(storedContent);
+		}
+	}
+***********/
+});
+</script>
+</body>
+</html>

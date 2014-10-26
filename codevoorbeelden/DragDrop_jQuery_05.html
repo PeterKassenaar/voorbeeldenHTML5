@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/jquery-ui-1.8.17.custom.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;	
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+}
+.card{
+	width:90px;	
+	margin: 0 6px;
+	border:1px solid #333;
+	box-shadow:3px 3px 5px #999;
+}
+#dropzone {
+	margin:20px;
+	padding:10px;
+	border-top: 1px solid #333;
+	background-color:#fee;
+	min-height:200px;
+
+}
+
+#dropzone img{
+	width: 90px;
+}
+
+#dropzone div.dropPos{
+	width:100px;
+	height:140px;
+	display: inline-block;
+	text-align:center;
+	background-color:#CCC;
+	border: 2px dotted #666;
+	border-radius: 8px;
+	margin: 5px;
+}
+
+.hovered{
+	background-color:#ffe;	
+}
+</style>
+<title>Drag and Drop via jQuery - 4</title>
+</head>
+<body>
+<div id="container">
+    <div id="status">Status informatie</div>
+    <div id="cards">       
+    </div>
+    <div id="dropzone">
+    </div>
+</div>
+
+<script>
+// parameters voor drag en drop in global variables
+var dragParameters={
+	containment: '#container',
+	cursor: 'move',
+	stack: '#dropzone div',
+	revert: true
+}
+
+var dropParameters = {
+	accept: '.card',
+	hoverClass: 'hovered',
+	drop: onDrop
+}
+var correctCards = 0 ; // globale teller
+
+$(document).ready(function(e) {
+	// 1. Wordt Drag and Drop ondersteund?
+    if(Modernizr.draganddrop){
+		
+		// 2. Initialiseren
+		initGame();		
+	}
+	else{
+		setStatus ('Drag & Drop wordt helaas niet ondersteund. U kunt deze game niet spelen');
+	}
+});
+
+// Nieuwe game initialiseren
+function initGame(){
+	// 1. Statusbalk leegmaken
+	setStatus('');
+	
+	// 2. Reset game
+	correctCards = 0;
+	$('#cards').html('');
+	$('#dropzone').html('');
+	
+	// 3. Kaarten schudden
+	var numbers = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+	numbers.sort(function(){
+		return Math.random() - 0.5
+	});
+	
+	
+	// 4. Geschudde kaarten in de <div> plaatsen
+	for( var i=0; i < 13; i++){
+		// 4a. Nieuwe kaart maken en data toevoegen
+		var newCard = $('<img src="img/cards/'+ numbers[i] +'_hearts.jpg"/>');
+		$(newCard)
+			.data('number', numbers[i])
+			.attr('id', 'card_' +numbers[i])
+			.addClass('card')
+			.draggable(dragParameters);
+
+		// 4b. Toevoegen aan de div
+		$('#cards').append(newCard);
+	}
+	
+	// 5. De drop-posities maken
+	var text = ['aas', 'een', 'twee', 'drie','vier','vijf','zes','zeven','acht','negen','tien','boer','vrouw','heer'];
+	for (var i=0; i<=13; i++){
+		var dropPosition = $('<div>' + text[i] + '</div>');
+		$(dropPosition)
+			.data('number', i)
+			.addClass('dropPos')
+			.droppable(dropParameters);
+		$('#dropzone').append(dropPosition);
+		
+	}
+}
+
+function onDrop(event, ui){
+	$('#status'	).css('background-color', '#00F');
+	setStatus('De kaart ' + ui.draggable.attr('id') + ' is gedropt');
+}
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+
+</script>
+</body>
+</html>

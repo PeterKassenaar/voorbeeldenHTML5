@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+	text-align:center;
+}
+
+#canvas1{
+	width: 500px;
+	height: 500px;
+	border: 2px solid #333;	
+	background: #bbb;
+}
+</style>
+<title>Canvas 01</title>
+</head>
+<body>
+<div id="container">
+<div id="status">Status informatie</div>
+<canvas id="canvas1">
+	Uw browser ondersteunt geen Canvas!<br>
+	(toon bijvoorbeeld image als fallback-content)
+</canvas>
+
+</div>
+
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	if(!Modernizr.canvas){
+		setStatus('Uw browser ondersteunt geen Canvas');
+		// toon fallback-content of laadt plug-in
+	}
+	else{
+		setStatus('Geschikt voor Canvas');
+	}
+	
+	
+});
+
+
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

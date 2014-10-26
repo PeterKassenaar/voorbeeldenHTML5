@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+	text-align:center;
+}
+
+#canvas1{
+	border: 2px solid #333;	
+}
+
+#controls button{
+	width: 160px;
+	height: 30px;
+	font-size: 16px;	
+	margin: 4px;
+	padding: 4px;
+}
+</style>
+<title>Canvas 05 Random rechthoeken tekenen</title>
+</head>
+<body>
+<div id="container">
+<div id="status">Status informatie</div>
+<div id="controls">
+<button id="btnDrawRect">Teken rechthoek </button>
+<button id="btnClear">Leegmaken</button>
+</div>
+</div>
+
+<script>
+$(document).ready(function(e) {
+	// JavaScript/jQuery here    
+	if(!Modernizr.canvas){
+		setStatus('Uw browser ondersteunt geen Canvas');
+		// toon fallback-content of laadt plug-in
+	}
+	else{
+		// 0. initialisaties
+		setStatus('Geschikt voor Canvas');
+		var width = 500;
+		var height = 500;
+		
+		// 1. Canvas maken
+		var canvas= document.createElement('canvas');
+		canvas.width=width;
+		canvas.height=height;
+		canvas.id= 'canvas1';
+		
+		// 2. Canvas toevoegen aan DOM.
+		$(canvas).appendTo('#container'); // OF: $('#container').append(canvas);
+		
+		// 3. Context ophalen en testen of getekend kan worden
+		var ctx = canvas.getContext('2d');
+		if (ctx){			
+			
+			// 4. Functies aan de knoppen toekennen
+			$('#btnDrawRect').on('click', drawRectangle);
+			
+			// 5. Canvas leegmaken (= overschrijven met lichtblauwe rechthoek)
+			$('#btnClear').on('click', function(){
+				var canvas = document.getElementById('canvas1');
+				if(canvas){
+					// tweak: canvas wordt leeggemaakt als je .width opnieuw instelt.
+					canvas.width = canvas.width;	
+				}
+	
+			});
+
+		}
+	}
+	
+	
+});
+
+// Uitwerking van de Oefening - random rechthoeken tekenen.
+function drawRectangle(){
+	// 1. Initialisatie. variabelen instellen.
+	var colors= ['black', 'cyan', 'red', 'green', 'darkGreen', 'yellow', 'crimson'];
+	var maxHeight = 100;
+	var maxWidth = 200;
+	var canvas = document.getElementById('canvas1');
+	
+	// 2. willekeurige hoogte en breedte berekenen
+	var height = Math.floor(Math.random() * maxHeight);
+	var width = Math.floor(Math.random() * maxWidth);
+	
+	// 3. willekeurige startpositie (x,y) berekenen
+	var xPos = Math.floor(Math.random() * canvas.width);
+	var yPos = Math.floor(Math.random() * canvas.height);
+	
+	
+	var ctx = canvas.getContext('2d');
+	if (ctx){
+		// Random achtergrondkleur kiezen uit de array met kleuren
+		ctx.fillStyle = colors[Math.floor(Math.random() * colors.length-1)];
+		ctx.fillRect(xPos, yPos, width, height);
+	}
+}
+
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

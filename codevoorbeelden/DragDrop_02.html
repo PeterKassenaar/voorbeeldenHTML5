@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+}
+.card{
+	width:140px;	
+	margin: 0 10px;
+	border:1px solid #333;
+	border-radius: 8px;
+	box-shadow:3px 3px 5px #999;
+}
+#dropzone {
+	margin:20px;
+	padding:10px;
+	border-top: 1px solid #333;
+	background-color:#fee;
+}
+</style>
+<title>Drag and Drop - voorbeeld deel 2</title>
+</head>
+<body>
+<div id="container">
+    <div id="status">Status informatie</div>
+    <div id="cards">
+        <img src="img/ace_clubs.jpg" id="aceClubs" alt="Ace of clubs" class="card" draggable="true">
+        <img src="img/ace_diamonds.jpg" id="aceDiamonds" alt="Ace of diamonds" class="card" draggable="true">
+        <img src="img/ace_hearts.jpg" id="aceHearts" alt="Ace of hearts" class="card" draggable="true">
+        <img src="img/ace_spades.jpg" id="aceSpades" alt="Ace of Spades" class="card" draggable="true">
+    </div>
+    <div id="dropzone">
+    <img src="img/ace_drop.png" alt="Drop Zone" class="card" draggable="false">
+    </div>
+</div>
+
+<script>
+$(document).ready(function(e) {
+	// 1. Wordt Drag and Drop ondersteund?
+    if(Modernizr.draganddrop){
+		// 2. Ja. Tonen in UI
+		setStatus('Drag and Drop wordt ondersteund');
+		// 3. HTML-notatie
+		//document.getElementById('aceClubs').addEventListener('dragstart', handleDragStart, false);
+		
+		// 4. jQuery-notatie
+		$('#aceClubs')
+			.on('dragstart', handleDragStart)
+			.on('dragend', handleDragEnd); // <-- DROP werkt niet voor Klaveraas! Deze regel moet weg.
+
+		// 5. jQuery-notatie voor meerdere elementen tegelijk
+		$('#aceDiamonds, #aceHearts, #aceSpades')
+					.on('dragstart', handleDragStart);
+
+		// 6. Dropzone instellen
+		$('#dropzone')
+			.on('dragover', handleDragOver)			
+			.on('drop', handleDrop);
+		
+	}else{
+		// Nee
+		setStatus('Geen Drag and Drop mogelijk');
+	}
+});
+
+// Registreer event listeners
+function handleDragStart(e){
+	setStatus('Drag started');
+	$('#status'	).css('background-color', '#333');
+}
+function handleDragEnd(e){
+	if(e.preventDefault){
+		e.preventDefault();				
+	}	
+	setStatus('Drag ended');
+	$('#status'	).css('background-color', '#699');
+}
+
+function handleDragOver(e){
+	// uitgebreid met onderstaande code, om drop event mogelijk te maken
+	if(e.preventDefault){
+		e.preventDefault();		
+	}	
+	setStatus('Dropzone Entered');
+	$('#status'	).css('background-color', '#933');
+}
+
+function handleDrop(e){
+	setStatus('Ace dropped!');
+	$('#status'	).css('background-color', '#00F');
+}
+
+
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

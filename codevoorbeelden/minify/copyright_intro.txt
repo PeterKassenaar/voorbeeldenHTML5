@@ -1,0 +1,7 @@
+/*!
+* Copyright (C) 2012 - Peter Kassenaar
+* info@kassenaar.com
+* ...meer copyright of informatie 
+* ...
+* ...
+*/

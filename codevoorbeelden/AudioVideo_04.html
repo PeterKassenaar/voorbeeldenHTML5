@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+#container {
+	width:740px;
+	border: 2px solid #066;
+	margin:0 auto;
+	background-color:#fff;
+}
+.hidden{
+	display: none;	
+}
+
+video{
+	border: 1px dotted #aaa;
+}
+
+#controls{
+	width:300px;
+	position:relative;
+	opacity:0.5;	
+	background-color:#CCC;
+	border: 1px solid #333;
+	border-radius:6px;
+	margin:5px;
+	font-size:18px;
+}
+
+#controls:hover{
+	opacity:1.0;	
+}
+
+#playPause {
+	display:inline-block;
+	margin-right:10px;
+	padding: 0 5px;
+    cursor: pointer;
+	border-right: 1px solid #999;
+}
+
+#muteUnmute {
+	display:inline-block;
+    float: right;  
+	margin-left:10px;
+	padding: 0 5px;
+	cursor: pointer;
+	border-left: 1px solid #999;
+}
+
+#playPause:hover,
+#muteUnmute:hover {
+	background-color:#333;
+	color: #fff;
+}
+
+#timer{
+	display:inline-block;
+}
+
+
+</style>
+<title>Video 04 - Besturing via JavaScript</title>
+</head>
+<body>
+<div id="container">
+  <div id="status">Status informatie</div>
+  <video id="myVideo" poster="video/video_poster.png">     
+    <!-- als eerste de mp4-verwijzing voor iPhone en iPad (iOS 3.x) -->
+    <source src="video/kruiwagen.mp4" type="video/mp4" />
+    
+    <!-- overige browsers -->
+    <source src="video/kruiwagen.webm" type="video/webm" />
+    <source src="video/kruiwagen.ogv" type="video/ogg" />    
+    <!-- fallback naar Flash -->
+    <!-- ... -->
+  </video>
+    
+  <!-- Controls: Starten, Stoppen, Dempen -->
+  <div id="controls" class="hidden">
+		<div id="playPause">Afspelen</div>
+		<div id="timer">00:00</div>
+		<div id="muteUnmute">Dempen</div>
+	</div>    
+</div>
+<script>
+$(document).ready(function(e) {
+	// 1. Is video in deze browser beschikbaar?
+	if(!Modernizr.video){
+		// 1a. Melding tonen
+		setStatus('Deze browser ondersteunt helaas geen video'	);
+		$('#myVideo').hide();
+	}
+	else{
+		// 2. Caching 
+		// 	(Let op: caching in jQuery-object als in $('#myVideo') werkt niet.
+		// 	Het ruwe HTML-element moet opgehaald worden).
+		var videoEl = document.getElementById('myVideo');
+		
+		// 3. controls zichtbaar maken
+		$('#controls').removeClass('hidden'); 
+		
+		// 4. Functionaliteit knoppen aanhaken
+		$('#playPause').on('click', function(){
+			if(videoEl.paused){
+				videoEl.play();
+				$(this).html('Stoppen');
+			}
+			else{
+				videoEl.pause();
+				$(this).html('Afspelen');
+			}
+		});		
+	}// end if()
+});
+
+// Standaardtijdcode van video (x.xxxxxx) formatteren naar hh:mm:ss (00:00:00).
+function formatTime(s){
+	var h = Math.floor(s / (60 * 60)),
+		dm = s % (60 * 60),
+		m = Math.floor(dm / 60),
+		ds = dm % 60,
+		secs = Math.ceil(ds);
+
+	// this fixes the crossover from 59 seconds to 1 minute
+	if (secs === 60) {
+		secs = 0;
+		m = m + 1;
+	}
+
+	// check op voorloopnul
+	if (secs < 10) {
+		secs = '0' + secs;
+	}
+
+	// this fixes the crossover from 59 minutes to 1 hour
+	if (m === 60) {
+		m = 0;
+		h = h + 1;
+	}
+
+	// check op voorloopnul
+	if (m < 10) {
+		m = '0' + m;
+	}
+
+	if (h === 0) {
+		fulltime = m + ':' + secs;
+	} else {
+		fulltime = h + ':' + m + ':' + secs;
+	}
+
+	return fulltime;
+}
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>

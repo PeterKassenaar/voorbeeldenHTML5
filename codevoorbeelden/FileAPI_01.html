@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="scripts/jquery-1.7.1.min.js"></script>
+<script src="scripts/modernizr-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<style>
+#status {
+	min-height:36px;
+	margin-bottom:15px;
+	padding-left:10px;
+	background-color:#669999;
+	color:#fff;
+	font-size:18px;
+}
+
+</style>
+<title>File API - 1</title>
+</head>
+<body>
+<div id="status">Status informatie</div>
+<form>
+  <h2>Kies een bestand: </h2>
+  <p>
+    <input type="file" name="inputFile" id="inputFile" />
+  </p>
+</form>
+<script>
+// global var
+var hasFileApi = false;
+
+$(document).ready(function(e) {
+	// 1. Is de File API beschikbaar?
+	hasFileApi = (window.File && window.FileReader);
+	if(!hasFileApi){
+		// 1a. File API niet beschikbaar
+		setStatus('Uw browser ondersteunt geen file API');
+		$('#inputFile').hide();		
+	}else{		
+		// 2. File API is beschikbaar. Event handlers aanhaken
+		$('#inputFile').on('change', onFileChanged);
+		setStatus('De File API is beschikbaar');		   
+	}
+});
+
+function onFileChanged(event){
+	var fileName = event.target.files[0].name;
+	setStatus('Bestand gekozen: ' + fileName);
+}
+
+// Algemene functie om bericht in statusbalk te tonen
+function setStatus(message){
+	$('#status'	).html(message);
+}
+</script>
+</body>
+</html>
