@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Haal boeken op </title>
+	<script src="scripts/jquery-1.7.1.min.js"></script>
+	<link href="css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<button class="btn btn-primary" id="btnGetBooks">Haal boeken met named function</button>
+		<button class="btn btn-warning" id="btnGetBooksInline">Haal boeken met inline function</button>
+
+		<ol id="listResult"></ol>
+
+		<button class="btn btn-danger" id="btnEmpty">Leegmaken</button>
+
+	</div>
+	<script>
+		$(document).ready(function () {
+			// Documentatie: 
+			// "In deze API kun je de velden 'url' en 'type' gebruiken
+			//  - 'url' is de URL waar de ajax-call naar toe gaat
+			//	- 'type' is het type call dat wordt gedaan (jsonp, get, post, ...)".
+			var options = {
+				url: 'http://api.yindo.com/api/book/new/15',
+				type: 'jsonp'
+			}
+
+			// 1. Klik op eerste button aanhaken: de boeken ophalen met een benoemde function haalBoeken()
+			$('#btnGetBooks').on('click', haalBoeken);
+
+			// 2. Klik op tweede button aanhaken: de boeken ophalen met een inline (anonieme) function
+			$('#btnGetBooksInline').on('click', function () {
+				ajaxCall(options, gereed);
+			});
+
+
+			// 3. De functie die wordt aangeroepen vanuit de eerste button. 
+			// Hij neemt een options-object en een callback-functie als parameter.
+			function haalBoeken() {
+				ajaxCall(options, gereed);
+			}
+
+
+			// 4. De callback-functie die wordt uitgevoerd bij terugkeer uit de Ajax-call
+			function gereed(aantal, msg) {
+				$('.container').append('Er zijn ' + aantal + ' items geretourneerd');
+				if (msg) {
+					$('.container').append(msg);
+				}
+			}
+
+			$('#btnEmpty').on('click', function () {
+				$('#listResult').empty();
+			});
+
+			/*****************************/
+			/**Dit is de 'API'		*******/
+			/*****************************/
+
+			/// Deze functie moet GOED gedocumenteerd worden:
+			// HOE werkt de functie 'callback',
+			// EN: welke parameters verwacht 'callback'
+			function ajaxCall(options, callback) {
+				$.ajax({
+					url: options.url,	// meegegeven object
+					dataType: options.type,
+					success: function (data) {
+						for (var i = 0; i < data.length; i++) {
+							var text = '<li>' + data[i].title + ' - ' + data[i].firstAuthorName + '</li>';
+							$('#listResult').append(text);
+						}
+						// De meegegeven callback-functie uitvoeren
+						callback(data.length, ' De boeken zijn succesvol opgehaald!')
+					}
+				});
+			};
+
+		}); // end document.ready()
+	</script>
+
+</body>
+</html>
